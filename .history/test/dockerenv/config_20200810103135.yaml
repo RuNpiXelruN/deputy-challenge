@@ -1,7 +1,0 @@
-Database:
-    Host: localhost
-    Name: postgres
-    User: postgres
-    Password: password
-    Port: 5432
-    MaxConnections: 1000
