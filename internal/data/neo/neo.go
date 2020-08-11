@@ -8,6 +8,8 @@ import (
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
 
+//go:generate moq -out service_mock.go . Service
+
 // Service type
 type Service interface {
 	Conn() bolt.Conn

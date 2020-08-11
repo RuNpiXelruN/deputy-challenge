@@ -1,4 +1,19 @@
-.PHONY: up down neo
+.PHONY: up down neo test mocks cover open print clearTestCache
+
+mocks: ## generates interface mocks
+	go generate ./...
+
+cover: clearTestCache ## Runs unit tests and creates cover.out file
+	go test -v ./... -coverprofile cover.out
+
+open: ## opens coverage report in browser
+	go tool cover -html cover.out
+
+print: ## displays coverage percent per func
+	go tool cover -func cover.out
+
+clearTestCache:
+	go clean -testcache
 
 up: neo ## Start docker containers
 	docker-compose up -d
@@ -26,11 +41,8 @@ neo_stop:
 down: neo_stop ## Stop running docker containers
 	docker-compose down
 
-ee:
-	echo ${HOME}
-
-ff:
-	echo ${HOME}
+test: clearTestCache ## Run unit tests
+	go test -v ./...
 
 help: ## Display available commands	
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'--
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

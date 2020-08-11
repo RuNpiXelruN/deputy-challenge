@@ -16,6 +16,8 @@ var (
 	password string = "password"
 )
 
+//go:generate moq -out service_mock.go . Service
+
 // Service type
 type Service interface {
 	PrepareQueries(ctx context.Context, conn *pgx.Conn) error

@@ -40,7 +40,6 @@ func (c *Client) Seed(ctx context.Context) error {
 
 // GetSubordinates func
 func (c *Client) GetSubordinates(ctx context.Context, userID string) ([]byte, error) {
-	// func (c *Client) GetSubordinates(ctx context.Context, userID string) ([]User, error) {
 
 	idInt, err := strconv.Atoi(userID)
 	if err != nil {
@@ -75,7 +74,6 @@ func (c *Client) GetSubordinates(ctx context.Context, userID string) ([]byte, er
 
 // MapResponseToUsers func
 func (c *Client) MapResponseToUsers(data [][]interface{}) ([]byte, error) {
-	// func (c *Client) MapResponseToUsers(data [][]interface{}) ([]User, error) {
 
 	users := []User{}
 
