@@ -3,7 +3,7 @@
 mocks: ## generates interface mocks
 	go generate ./...
 
-cover: clearTestCache ## Runs unit tests and creates cover.out file
+cover: ## Runs unit tests and creates cover.out file
 	go test -v ./... -coverprofile cover.out
 
 open: ## opens coverage report in browser
@@ -12,8 +12,8 @@ open: ## opens coverage report in browser
 print: ## displays coverage percent per func
 	go tool cover -func cover.out
 
-clearTestCache:
-	go clean -testcache
+# clearTestCache:
+# 	go clean -testcache
 
 up: neo ## Start docker containers
 	docker-compose up -d
