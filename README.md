@@ -102,7 +102,7 @@ Login with,
 username: neo4j
 password: test
 ```
-From there you will land on your Neo4j dashboard. Have a play around with the data (once you run the `seed` command).  
+From there you will land on your Neo4j dashboard. Have a play around with the data (once you run the `seed` command from the cli `./deputyJD seed`).  
 You can execute cypher queries in the editor at the top. A couple of basic `cypher` queries for you to play with are, (`cmd + enter` to execute commands, `cmd + up arrow` to scroll through command history, `esc` to toggle editor full screen)
 ```go
 match (n) return n  // returns all nodes and relationships. click on the graph tab to see the nodes interconnected and my architecture.
@@ -117,7 +117,7 @@ RETURN u AS users
 ```
 match (n) detach delete n // deletes all nodes and relationships.
 ```
-run `./deputyJD seed` again to populate it once more.
+run `./deputyJD seed` to populate it once more.
 
 ## Thanks!
 Thanks for this challenge guys! If there's anything else you need or wanted to ask do hesitate to ask :)  
