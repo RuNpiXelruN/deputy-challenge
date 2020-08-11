@@ -1,0 +1,6 @@
+Database:
+    Host: localhost
+    Name: depchallenge
+    User: postgres
+    Password: password
+    Port: 5432

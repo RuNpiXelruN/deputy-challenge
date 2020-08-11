@@ -1,0 +1,6 @@
+Database:
+    Host: localhost
+    Name: deputychallenge
+    User: postgres
+    Password: password
+    Port: 5432

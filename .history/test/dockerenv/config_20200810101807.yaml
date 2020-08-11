@@ -1,0 +1,7 @@
+Database:
+    Host: localhost
+    Name: deputychallenge
+    User: deputyuser
+    Password: password
+    Port: 5432
+    MaxConnections: 1000

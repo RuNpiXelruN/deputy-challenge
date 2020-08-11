@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  basic:
+
+services:
+  postgres:
+    hostname: postgres
+    container_name: postgres_deputy
+    restart: always
+    image:  postgres:9.6
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+      - POSTGRES_INITDB_ARGS="--locale=en_US.UTF-8"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./test/dockerenv/db-setup/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./deployment/migrations/parameterised:/migrations
+    networks:
+      - basic

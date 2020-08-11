@@ -1,0 +1,32 @@
+.PHONY: up down neo
+
+up: neo ## Start docker containers
+	docker-compose up -d
+
+neo: ## Start Neo4j container
+	docker run \
+    --name neo4j_deputy \
+    -p7474:7474 -p7687:7687 \
+    -d \
+    -v ${HOME}/neo4j/data:/data \
+    -v ${HOME}/neo4j/logs:/logs \
+    -v ${HOME}/neo4j/import:/var/lib/neo4j/import \
+    -v ${HOME}/neo4j/plugins:/plugins \
+    -e NEO4J_AUTH=none \
+	-e NEO4J_apoc_export_file_enabled=true \
+    -e NEO4J_apoc_import_file_enabled=true \
+    -e NEO4J_apoc_import_file_use__neo4j__config=true \
+    -e NEO4JLABS_PLUGINS=\[\"apoc\"\] \
+    neo4j:latest
+
+	
+    
+
+
+
+down: ## Stop running docker containers
+	docker-compose down && \
+	docker stop neo4j_deputy
+
+help: ## Display available commands	
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

@@ -1,0 +1,64 @@
+version: '3'
+
+networks:
+  basic:
+
+services:
+  neo4j:
+    container_name: neo4j_container
+    restart: always
+    image: neo4j:3.5.3
+    network_mode: "bridge"
+    networks:
+      - basic
+    ports:
+      - "7474:7474"
+      - "6477:6477"
+      - "7687:7687"
+      - "7473:7473"
+    environment:
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_shell_enabled=true
+      - NEO4J_dbms_connector_http_listen__address=:7474
+      - NEO4J_dbms_connector_https_listen__address=:6477
+      - NEO4J_dbms_connector_bolt_listen__address=:7687
+    volumes:
+      - ./plugins:/plugins
+      - ./data:/data
+      - ./import:/import
+
+  neo:
+    image: neo4j:latest
+    network_mode: bridge
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4J_AUTH=none
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_shell_enabled=true
+    volumes:
+      - ./plugins:/plugins
+      - ./data:/data
+      - ./import:/import
+
+  postgres:
+    hostname: postgres
+    container_name: postgres_deputy
+    restart: always
+    image:  postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=depchallenge
+      - POSTGRES_INITDB_ARGS="--locale=en_US.UTF-8"
+    ports:
+      - 5433:5432
+    volumes:
+      - ./test/dockerenv/dbsetup/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./internal/data/migrations/:/migrations
+    networks:
+      - basic
