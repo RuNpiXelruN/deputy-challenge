@@ -8,14 +8,6 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-var (
-	host     string = "127.0.0.1"
-	port     int    = 5432
-	dbName   string = "deputychallenge"
-	user     string = "postgres"
-	password string = "password"
-)
-
 //go:generate moq -out service_mock.go . Service
 
 // Service type
@@ -24,6 +16,8 @@ type Service interface {
 	Exec(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error)
 	Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error)
 	Seed(ctx context.Context) error
+	SetRoles(ctx context.Context) error
+	SetUsers(ctx context.Context) error
 	GetSubordinates(ctx context.Context, userID string) ([]byte, error)
 	Conn() *pgx.Conn
 	DB() *pgx.Conn

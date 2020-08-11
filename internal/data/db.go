@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/runpixelrun/deputy_test/internal/data/neo"
-	"github.com/runpixelrun/deputy_test/internal/data/pg"
+	"github.com/runpixelrun/deputy-challenge/internal/data/neo"
+	"github.com/runpixelrun/deputy-challenge/internal/data/pg"
 )
 
 // Client type

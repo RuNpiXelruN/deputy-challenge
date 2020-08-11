@@ -1,19 +1,10 @@
-.PHONY: up down neo test mocks cover open print clearTestCache
+.PHONY: up down neo test mocks clearTestCache
 
 mocks: ## generates interface mocks
 	go generate ./...
 
-cover: ## Runs unit tests and creates cover.out file
-	go test -v ./... -coverprofile cover.out
-
-open: ## opens coverage report in browser
-	go tool cover -html cover.out
-
-print: ## displays coverage percent per func
-	go tool cover -func cover.out
-
-# clearTestCache:
-# 	go clean -testcache
+clearTestCache:
+	go clean -testcache
 
 up: neo ## Start docker containers
 	docker-compose up -d
@@ -43,6 +34,21 @@ down: neo_stop ## Stop running docker containers
 
 test: clearTestCache ## Run unit tests
 	go test -v ./...
+
+build: ## builds the -challenge binary for OSX and places in the root of the workspace
+	cd cmd && \
+	env GOOS=darwin GOARCH=amd64 go build -v -o deputyJD . && \
+	mv deputyJD ../.
+
+buildLinux: ## builds the -challenge binary for Linux and places in the root of the workspace
+	cd cmd && \
+	env GOOS=linux GOARCH=amd64 go build -v -o deputyJD_linux . && \
+	mv deputyJD_linux ../.
+
+buildWin: ## builds the deputy-challenge binary for Windows and places in the root of the workspace
+	cd cmd && \
+	env GOOS=windows GOARCH=amd64 go build -v -o deputyJD_win . && \
+	mv deputyJD_win ../.
 
 help: ## Display available commands	
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	db "github.com/runpixelrun/deputy_test/internal/data"
+	db "github.com/runpixelrun/deputy-challenge/internal/data"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ var pgGetSubCMD = &cobra.Command{
 	Short: "Returns subordinates from the Postgres database given a userID",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(userID) < 1 {
-			fmt.Println("You must provide a userID (eg, `--userID 2`)")
+			fmt.Println("You must provide a userID (eg, `--userID 3`)")
 			return
 		}
 
@@ -41,7 +41,7 @@ var pgGetSubCMD = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("\nSubordinates for userID %v are:\n%v\n", userID, string(bytes))
+		fmt.Printf("\nSubordinates for userID %v (from Postgres):\n%v\n", userID, string(bytes))
 	},
 }
 

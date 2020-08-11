@@ -1,18 +1,39 @@
-package pg
+package pg_test
 
 import (
+	"context"
 	"testing"
 
-	"github.com/ryboe/q"
+	db "github.com/runpixelrun/deputy-challenge/internal/data"
+	"github.com/runpixelrun/deputy-challenge/internal/data/neo"
+	"github.com/runpixelrun/deputy-challenge/internal/data/pg"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPostgres(t *testing.T) {
-	conn, err := NewConn()
-	if err != nil {
-		q.Q(err)
-	} else {
-		q.Q(conn)
-	}
+	ctx := context.Background()
 
-	q.Q(conn.Config())
+	// [x] Seed should be called
+
+	t.Run("Seed should be called", func(t *testing.T) {
+
+		pg := &pg.ServiceMock{
+			SeedFunc: func(ctx context.Context) error {
+				return nil
+			},
+		}
+		neo := &neo.ServiceMock{
+			SeedFunc: func(ctx context.Context) error {
+				return nil
+			},
+		}
+
+		dbClient := &db.Client{
+			Pg:  pg,
+			Neo: neo,
+		}
+		dbClient.SeedDatabases(ctx)
+
+		assert.Len(t, pg.SeedCalls(), 1)
+	})
 }

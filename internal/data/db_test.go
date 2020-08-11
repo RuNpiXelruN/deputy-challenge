@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/runpixelrun/deputy_test/internal/data/neo"
-	"github.com/runpixelrun/deputy_test/internal/data/pg"
+	"github.com/runpixelrun/deputy-challenge/internal/data/neo"
+	"github.com/runpixelrun/deputy-challenge/internal/data/pg"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +31,7 @@ func TestDB(t *testing.T) {
 			},
 		}
 		dbClient := &Client{
-			Pg: pg,
+			Pg:  pg,
 			Neo: neo,
 		}
 
@@ -40,11 +40,11 @@ func TestDB(t *testing.T) {
 		t.Run("Pg.Seed should be called", func(t *testing.T) {
 			assert.Len(t, pg.SeedCalls(), 1)
 		})
-		
+
 		t.Run("Neo.Seed should be called", func(t *testing.T) {
 			assert.Len(t, neo.SeedCalls(), 1)
 		})
-		
+
 		t.Run("if seeds succeed error should nil", func(t *testing.T) {
 			assert.Nil(t, err)
 		})
@@ -70,7 +70,7 @@ func TestDB(t *testing.T) {
 			c.GetSubordinates(ctx, "23")
 			assert.Len(t, neo.GetSubordinatesCalls(), 1)
 		})
-		
+
 		t.Run("if client.Pg is not nil, Pg.GetSubordinates should be called", func(t *testing.T) {
 			pg := &pg.ServiceMock{
 				GetSubordinatesFunc: func(ctx context.Context, userID string) ([]byte, error) {
@@ -104,7 +104,7 @@ func TestDB(t *testing.T) {
 			assert.Nil(t, err)
 			assert.IsType(t, []User{}, users)
 		})
-		
+
 		t.Run("if Pg.GetSubordinates succeeds, a []User should be returned and nil error", func(t *testing.T) {
 			pg := &pg.ServiceMock{
 				GetSubordinatesFunc: func(ctx context.Context, userID string) ([]byte, error) {

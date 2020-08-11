@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	db "github.com/runpixelrun/deputy_test/internal/data"
+	db "github.com/runpixelrun/deputy-challenge/internal/data"
 	"github.com/spf13/cobra"
 )
 

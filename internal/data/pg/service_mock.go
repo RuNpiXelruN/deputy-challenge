@@ -18,6 +18,8 @@ var (
 	lockServiceMockPrepareQueries  sync.RWMutex
 	lockServiceMockQuery           sync.RWMutex
 	lockServiceMockSeed            sync.RWMutex
+	lockServiceMockSetRoles        sync.RWMutex
+	lockServiceMockSetUsers        sync.RWMutex
 )
 
 // Ensure, that ServiceMock does implement Service.
@@ -51,6 +53,12 @@ var _ Service = &ServiceMock{}
 //             SeedFunc: func(ctx context.Context) error {
 // 	               panic("mock out the Seed method")
 //             },
+//             SetRolesFunc: func(ctx context.Context) error {
+// 	               panic("mock out the SetRoles method")
+//             },
+//             SetUsersFunc: func(ctx context.Context) error {
+// 	               panic("mock out the SetUsers method")
+//             },
 //         }
 //
 //         // use mockedService in code that requires Service
@@ -78,6 +86,12 @@ type ServiceMock struct {
 
 	// SeedFunc mocks the Seed method.
 	SeedFunc func(ctx context.Context) error
+
+	// SetRolesFunc mocks the SetRoles method.
+	SetRolesFunc func(ctx context.Context) error
+
+	// SetUsersFunc mocks the SetUsers method.
+	SetUsersFunc func(ctx context.Context) error
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -121,6 +135,16 @@ type ServiceMock struct {
 		}
 		// Seed holds details about calls to the Seed method.
 		Seed []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+		}
+		// SetRoles holds details about calls to the SetRoles method.
+		SetRoles []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+		}
+		// SetUsers holds details about calls to the SetUsers method.
+		SetUsers []struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 		}
@@ -355,5 +379,67 @@ func (mock *ServiceMock) SeedCalls() []struct {
 	lockServiceMockSeed.RLock()
 	calls = mock.calls.Seed
 	lockServiceMockSeed.RUnlock()
+	return calls
+}
+
+// SetRoles calls SetRolesFunc.
+func (mock *ServiceMock) SetRoles(ctx context.Context) error {
+	if mock.SetRolesFunc == nil {
+		panic("ServiceMock.SetRolesFunc: method is nil but Service.SetRoles was just called")
+	}
+	callInfo := struct {
+		Ctx context.Context
+	}{
+		Ctx: ctx,
+	}
+	lockServiceMockSetRoles.Lock()
+	mock.calls.SetRoles = append(mock.calls.SetRoles, callInfo)
+	lockServiceMockSetRoles.Unlock()
+	return mock.SetRolesFunc(ctx)
+}
+
+// SetRolesCalls gets all the calls that were made to SetRoles.
+// Check the length with:
+//     len(mockedService.SetRolesCalls())
+func (mock *ServiceMock) SetRolesCalls() []struct {
+	Ctx context.Context
+} {
+	var calls []struct {
+		Ctx context.Context
+	}
+	lockServiceMockSetRoles.RLock()
+	calls = mock.calls.SetRoles
+	lockServiceMockSetRoles.RUnlock()
+	return calls
+}
+
+// SetUsers calls SetUsersFunc.
+func (mock *ServiceMock) SetUsers(ctx context.Context) error {
+	if mock.SetUsersFunc == nil {
+		panic("ServiceMock.SetUsersFunc: method is nil but Service.SetUsers was just called")
+	}
+	callInfo := struct {
+		Ctx context.Context
+	}{
+		Ctx: ctx,
+	}
+	lockServiceMockSetUsers.Lock()
+	mock.calls.SetUsers = append(mock.calls.SetUsers, callInfo)
+	lockServiceMockSetUsers.Unlock()
+	return mock.SetUsersFunc(ctx)
+}
+
+// SetUsersCalls gets all the calls that were made to SetUsers.
+// Check the length with:
+//     len(mockedService.SetUsersCalls())
+func (mock *ServiceMock) SetUsersCalls() []struct {
+	Ctx context.Context
+} {
+	var calls []struct {
+		Ctx context.Context
+	}
+	lockServiceMockSetUsers.RLock()
+	calls = mock.calls.SetUsers
+	lockServiceMockSetUsers.RUnlock()
 	return calls
 }
