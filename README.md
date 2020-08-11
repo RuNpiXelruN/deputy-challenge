@@ -3,7 +3,7 @@
   
 ### Task
  
-Given set of linked hierarchical _'roles'_, and a set of _'users'_, each with a specific role were provided,
+Given a set of linked hierarchical _'roles'_, and a set of _'users'_ that each had a specific role,
 
 - Set the roles in a memory store  
 - Set the users in a memory store  
@@ -14,7 +14,7 @@ Given set of linked hierarchical _'roles'_, and a set of _'users'_, each with a 
 This task has been written in Go and for convenience has been made into a CLI app. 
 Two different implementations have been completed. 
 One backed by a Postgres database, and one backed by the graph database Neo4j.  
-I assumed recursion was what was hoping to be seen in the solution hence the Postgres version, however I wanted to also include a Neo4j solution to show how simple it is to query a Neo4j database.  
+I assumed recursion was what was hoping to be seen in the solution hence the Postgres version, however I also wanted to include a Neo4j solution to show how simple it is to query a Neo4j database.  
 
 ### To run
 
@@ -32,16 +32,17 @@ Postgres and Neo4j are run in Docker containers. To start them run,
 ```
 make up
 ```  
-**It may take up to 30 seconds for the containers to be running.
+**It may take up to 30 seconds for the containers to be running.  
+
+To run using the Go runtime,
 ```
 go run cmd/main.go
 ```  
-to run using the Go runtime.  
 
 If you don't have Go installed, you can still run through the built binary provided within this repo **(which is a lot quicker)**  
 
 Three binaries have been provided. One each for OSX, Linux, and Windows environments.  
-To run the mac binary and view the CLI options,
+To run the mac binary and view the CLI options, from the command line execute,
 ```
 ./deputyJD
 ```
@@ -62,7 +63,7 @@ To fetch the postgres subordinates (remember to run `./deputyJD` if you want to 
 ```
 ./deputyJD pgGetSub --userID <someID>
 ```
-To fetch the postgres subordinates
+To fetch the neo4j subordinates
 ```
 ./deputyJD neoGetSub --userID <someID>
 ```
@@ -114,7 +115,7 @@ UNWIND [us] AS u
 WITH DISTINCT u
 RETURN u AS users
 ```
-```
+```go
 match (n) detach delete n // deletes all nodes and relationships.
 ```
 run `./deputyJD seed` to populate it once more.
